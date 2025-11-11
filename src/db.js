@@ -1,5 +1,4 @@
-// src/db.js
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion,ObjectId } = require("mongodb");
 
 let client;
 let db;
@@ -30,4 +29,4 @@ function getDB() {
   return db;
 }
 
-module.exports = { connectDB, getDB };
+module.exports = { connectDB, getDB,ObjectId };
