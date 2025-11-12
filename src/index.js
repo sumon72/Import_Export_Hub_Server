@@ -163,6 +163,50 @@ app.delete('/deletemyimport/:id', firebaseAuthMiddleware, async (req, res) => {
   }
 });
 
+
+app.get('/getmyexports/:email', firebaseAuthMiddleware, async (req, res) => {
+  try {
+
+    const db = getDB();
+    const collection = db.collection("Product");
+    const { email } = req.params;
+
+    if (!email) {
+      return res.status(400).json({ message: "User Not Found" });
+    }
+
+    const myImport = await collection.find({ email: email,IsImport:0 }).toArray();
+
+    res.status(200).json(myImport);
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
+app.delete('/deletemyexports/:id', firebaseAuthMiddleware, async (req, res) => {
+  try {
+    const db = getDB();
+    const collection = db.collection("Product");
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ message: "Product ID is required" });
+    }
+
+    const result = await collection.deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: "Product not found or already deleted" });
+    }
+
+    res.status(200).json({ message: "Product successfully deleted" });
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 // catch all
 app.use((err, req, res, next) => {
   console.error(err);
