@@ -1,13 +1,12 @@
 const admin = require('firebase-admin');
-const fs = require('fs');
 
 let initialized = false;
 
 function initFirebase(serviceAccountPath) {
   if (initialized) return;
-  const serviceAcc = require(serviceAccountPath);
+  //const serviceAcc = require(serviceAccountPath);
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAcc)
+    credential: admin.credential.cert(serviceAccountPath)
   });
   initialized = true;
 }
